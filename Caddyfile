@@ -1,0 +1,46 @@
+# Caddy auto-provisions Let's Encrypt TLS for every host below once DNS points here
+# and ports 80/443 are reachable. Set DOMAIN and ACME_EMAIL in .env.
+{
+	email {$ACME_EMAIL}
+}
+
+(security_headers) {
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Permissions-Policy "camera=(), microphone=(), geolocation=()"
+		-Server
+	}
+}
+
+# Landing page
+{$DOMAIN}, www.{$DOMAIN} {
+	import security_headers
+	header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'"
+	root * /srv/site
+	file_server
+	encode zstd gzip
+}
+
+# Reverse-proxied apps — uncomment and point at your containers/hosts.
+# Use Docker service names when the app is on the same compose network.
+#
+# app.{$DOMAIN} {
+# 	import security_headers
+# 	reverse_proxy webapp:3000
+# }
+#
+# api.{$DOMAIN} {
+# 	import security_headers
+# 	reverse_proxy 10.0.0.12:8080
+# }
+#
+# Internal-only service: restrict by source IP
+# dash.{$DOMAIN} {
+# 	import security_headers
+# 	@blocked not remote_ip 203.0.113.0/24 192.168.0.0/16
+# 	respond @blocked 403
+# 	reverse_proxy grafana:3000
+# }

@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="MRDLG apps and services">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>MRDLG</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="wrap hero">
+    <div class="brand"><span class="logo" aria-hidden="true">M</span>MRDLG</div>
+    <h1>Apps &amp; Services</h1>
+    <p class="sub">Everything we run, in one place.</p>
+    <input id="filter" type="search" placeholder="Filter services…" aria-label="Filter services" autocomplete="off">
+  </header>
+
+  <main class="wrap">
+    <ul id="grid" class="grid" aria-live="polite"></ul>
+    <p id="empty" class="empty" hidden>No services match.</p>
+  </main>
+
+  <footer class="wrap foot">&copy; <span id="year"></span> MRDLG</footer>
+
+  <script src="services.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
